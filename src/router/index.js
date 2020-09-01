@@ -1,27 +1,33 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-Vue.use(VueRouter)
+/* 导入需要渲染的组件 */
+import Home from "../views/Home.vue";
 
-  const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+/* 路由懒加载：文件的切割，把组件的代码单独打包为独立的JS  =>对页面第一加载的性能体验有很大的帮助 */
 
+Vue.use(VueRouter);
 const router = new VueRouter({
-  routes
-})
+  mode: 'hash',
+  routes: [{
+    path: '/',
+    component: Home
+  }, {
+    path: '/detail/:id',
+    component: () => import( /*webpackChunkName:"component"*/ '../views/Detail.vue')
+  }, {
+    path: '/content/:id/:sectionId',
+    component: () => import( /*webpackChunkName:"component"*/ '../views/Content.vue')
+  }, {
+    path: '/info',
+    component: () => import( /*webpackChunkName:"component"*/ '../views/MyInfo.vue')
+  }, {
+    path: '/buy',
+    component: () => import( /*webpackChunkName:"component"*/ '../views/MyBuy.vue')
+  }, {
+    path: '*',
+    redirect: '/'
+  }]
+});
 
-export default router
+export default router;
